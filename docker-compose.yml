@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+    hub-db:
+        image: postgres:12.3-alpine
+        container_name: jupyterhub-db
+        restart: always
+        environment:
+            PGDATA: ${DB_VOLUME_CONTAINER}
+            POSTGRES_DB: ${POSTGRES_DB}
+        env_file: 
+            - secrets/postgres.env
+        volumes: 
+            - "db:${DB_VOLUME_CONTAINER}"
+        networks: 
+            - db
+
+    hub:
+        depends_on: 
+            - hub-db
+        build:
+            context: hub/
+            dockerfile: dockerfile
+            args: 
+                JUPYTERHUB_VERSION: ${JUPYTERHUB_VERSION}
+        image: jupyterhub
+        container_name: jupyterhub-hub
+        restart: always
+        environment:
+            ADMIN_USER: ${ADMIN_USER}
+            DATA_VOLUME_CONTAINER: ${DATA_VOLUME_CONTAINER}
+            DOCKER_NETWORK_NAME: ${DOCKER_NETWORK_NAME}
+            DOCKER_NOTEBOOK_DIR: ${DOCKER_NOTEBOOK_DIR}
+            DOCKER_NOTEBOOK_IMAGE: ${DOCKER_NOTEBOOK_IMAGE}
+            HUB_HOST: hub
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_HOST: hub-db
+        env_file: 
+            - secrets/postgres.env
+            - secrets/oauth.env
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:rw"
+            - "data:${DATA_VOLUME_CONTAINER}"
+        networks: 
+            - proxy
+            - db
+            - users
+        command: 
+            jupyterhub -f /srv/jupyterhub/jupyterhub_config.py
+
+    reverseproxy:
+        depends_on: 
+            - hub
+        build: 
+            context: reverseproxy
+            dockerfile: dockerfile
+        image: reverseproxy
+        container_name: jupyterhub-reverseproxy
+        restart: always
+        ports: 
+            - 8000:8000
+        networks: 
+            - proxy
+
+volumes:
+    data:
+        external: true
+        name: ${DATA_VOLUME_HOST}
+    db:
+        external: true
+        name: ${DB_VOLUME_HOST}
+
+networks: 
+    users:
+        name: ${DOCKER_NETWORK_NAME}
+    db:
+    proxy:

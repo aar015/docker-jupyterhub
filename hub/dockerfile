@@ -1,0 +1,9 @@
+ARG JUPYTERHUB_VERSION
+
+FROM jupyterhub/jupyterhub-onbuild:$JUPYTERHUB_VERSION
+
+RUN pip install --no-cache-dir \
+    psycopg2-binary==2.8.5\
+    dockerspawner==0.11.1\
+    oauthenticator==0.11.0\
+    cdsdashboards==0.1.0
