@@ -1,0 +1,7 @@
+FROM nginx:1.19.1-alpine
+
+ARG DOMAIN_NAME
+ENV DOMAIN_NAME $DOMAIN_NAME
+
+COPY jupyterhub.conf.template /jupyterhub.conf.template
+RUN envsubst '$DOMAIN_NAME' < /jupyterhub.conf.template > /etc/nginx/conf.d/jupyterhub.conf

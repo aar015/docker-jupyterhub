@@ -1,0 +1,7 @@
+FROM nginx:1.19.1-alpine
+
+ARG DOMAIN_NAME
+ENV DOMAIN_NAME $DOMAIN_NAME
+
+COPY challenges.conf.template /challenges.conf.template
+RUN envsubst < /challenges.conf.template > /etc/nginx/conf.d/challenges.conf

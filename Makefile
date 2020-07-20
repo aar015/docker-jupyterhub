@@ -16,6 +16,9 @@ secrets/oauth.env:
 
 check-files: secrets/postgres.env secrets/oauth.env
 
+init:
+	docker-compose -f docker-compose-ssl-init.yml build
+
 user:
 	docker build -t $(DOCKER_NOTEBOOK_IMAGE) \
 		--build-arg JUPYTERHUB_VERSION=$(JUPYTERHUB_VERSION) \
