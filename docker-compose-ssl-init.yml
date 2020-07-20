@@ -3,25 +3,24 @@ version: "3.8"
 
 services:
 
-  nginx:
-    image: nginx:1.19.1-alpine
-    build: 
-        context: reverseproxy/ssl_init
-        dockerfile: dockerfile
-        args:
-          DOMAIN_NAME: ${DOMAIN_NAME}
-    image: nginx-ssl-init
-    restart: unless-stopped
-    volumes:
-      - ./secrets/certbot/conf:/etc/letsencrypt
-      - ./secrets/certbot/www:/var/www/certbot
-    ports:
-      - 80:80
-      - 443:443
+    nginx:
+        build: 
+            context: reverseproxy/ssl_init
+            dockerfile: dockerfile
+            args:
+                DOMAIN_NAME: ${DOMAIN_NAME}
+        image: nginx-ssl-init
+        restart: unless-stopped
+        volumes:
+            - ./secrets/certbot/conf:/etc/letsencrypt
+            - ./secrets/certbot/www:/var/www/certbot
+        ports:
+            - 80:80
+            - 443:443
 
-  certbot:
-    image: certbot/certbot:v1.6.0
-    restart: unless-stopped
-    volumes:
-      - ./secrets/certbot/conf:/etc/letsencrypt
-      - ./secrets/certbot/www:/var/www/certbot
+    certbot:
+        image: certbot/certbot:v1.6.0
+        restart: unless-stopped
+        volumes:
+            - ./secrets/certbot/conf:/etc/letsencrypt
+            - ./secrets/certbot/www:/var/www/certbot
