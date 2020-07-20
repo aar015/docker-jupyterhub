@@ -1,5 +1,8 @@
 version: '3.8'
+
+
 services:
+
     hub-db:
         image: postgres:12.3-alpine
         container_name: jupyterhub-db
@@ -76,16 +79,23 @@ services:
             - ./data/certbot/www:/var/www/certbot
         entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
+
 volumes:
+
     data:
         external: true
         name: ${DATA_VOLUME_HOST}
+
     db:
         external: true
         name: ${DB_VOLUME_HOST}
 
+        
 networks: 
+
     users:
         name: ${DOCKER_NETWORK_NAME}
+
     db:
+        
     proxy:
