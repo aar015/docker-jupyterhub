@@ -24,19 +24,15 @@ RUN python3 -m pip install --no-cache\
     dash==1.13.4\
     panel==0.9.7\
     jupyterlab-git==0.20.0\
-    jupyterlab-latex==2.0.0\
     bqplot\
-    jupyter-dash\
-    jupyterlab-sql
+    jupyter-dash
 
 RUN jupyter labextension install\
     @jupyterlab/toc\
     @jupyterlab/git\
-    @jupyterlab/latex\
     @jupyter-widgets/jupyterlab-manager\
     @jupyter-voila/jupyterlab-preview\
     jupyterlab-dash\
-    jupyerlab-spreadsheet\
     bqplot\
     @karosc/jupyterlab_dracula\
     jupyterlab-theme-solarized-dark
