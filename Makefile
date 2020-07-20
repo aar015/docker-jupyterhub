@@ -27,4 +27,4 @@ user:
 build: check-files volumes
 	docker-compose build
 
-.PHONY: volumes check-files user build
+.PHONY: volumes check-files init user build
