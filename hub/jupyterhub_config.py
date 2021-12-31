@@ -49,11 +49,12 @@ c.DockerSpawner.debug = True
 c.DockerSpawner.name_template = "{prefix}-{username}-{servername}"
 
 ########## Authentication ##########
-# Use Google OAuth
-c.JupyterHub.authenticator_class = 'oauthenticator.GoogleOAuthenticator'
-# Create One Admin User
-c.Authenticator.allowed_users = {os.environ.get('ADMIN_USER')}
-c.Authenticator.admin_users = {os.environ.get('ADMIN_USER')}
+if (os.environ.get('MODE') == 'prod'):
+    # Use Google OAuth
+    c.JupyterHub.authenticator_class = 'oauthenticator.GoogleOAuthenticator'
+    # Create One Admin User
+    c.Authenticator.allowed_users = {os.environ.get('ADMIN_USER')}
+    c.Authenticator.admin_users = {os.environ.get('ADMIN_USER')}
 
 ########## Dashboards ##########
 c.JupyterHub.template_paths = CDS_TEMPLATE_PATHS

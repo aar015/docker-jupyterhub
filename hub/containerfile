@@ -1,6 +1,6 @@
 ARG JUPYTERHUB_VERSION
 
-FROM jupyterhub/jupyterhub-onbuild:$JUPYTERHUB_VERSION
+FROM docker.io/jupyterhub/jupyterhub-onbuild:$JUPYTERHUB_VERSION
 
 RUN pip install --no-cache-dir \
     psycopg2-binary==2.8.5\

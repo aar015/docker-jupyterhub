@@ -1,6 +1,6 @@
 ARG JUPYTERHUB_VERSION
 
-FROM jupyterhub/singleuser:$JUPYTERHUB_VERSION
+FROM docker.io/jupyterhub/singleuser:$JUPYTERHUB_VERSION
 
 USER root
 
